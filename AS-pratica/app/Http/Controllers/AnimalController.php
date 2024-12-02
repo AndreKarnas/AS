@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Animal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class AnimalController extends Controller
 {
@@ -15,6 +16,8 @@ class AnimalController extends Controller
 
     public function create()
     {
+        Gate::authorize('create', Animal::class);
+        
         return view('animais.create');
     }
 
@@ -35,6 +38,8 @@ class AnimalController extends Controller
 
     public function edit($id)
     {
+        Gate::authorize('update', Animal::class);
+
         $animal = Animal::findOrFail($id);
         return view('animais.edit', compact('animal'));
     }
@@ -54,6 +59,8 @@ class AnimalController extends Controller
 
     public function destroy($id)
     {
+        Gate::authorize('delete', Animal::class);
+
         $animal = Animal::findOrFail($id);
         $animal->delete();
         return redirect('animais')->with('success', 'Animal deleted successfully.');

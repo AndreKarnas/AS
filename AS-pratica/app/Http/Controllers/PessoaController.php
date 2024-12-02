@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pessoa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PessoaController extends Controller
 {
@@ -15,6 +16,8 @@ class PessoaController extends Controller
 
     public function create()
     {
+        Gate::authorize('create', Pessoa::class);
+
         return view('pessoas.create');
     }
 
@@ -36,6 +39,8 @@ class PessoaController extends Controller
 
     public function edit($id)
     {
+        Gate::authorize('update', Pessoa::class);
+
         $pessoa = pessoa::findOrFail($id);
         return view('pessoas.edit', compact('pessoa'));
     }
@@ -53,6 +58,8 @@ class PessoaController extends Controller
 
     public function destroy($id)
     {
+        Gate::authorize('delete', Pessoa::class);
+
         $pessoa = pessoa::findOrFail($id);
         $pessoa->delete();
         return redirect('pessoas')->with('success', 'Pessoa deleted successfully.');

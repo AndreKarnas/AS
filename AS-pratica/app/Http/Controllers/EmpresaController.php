@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Empresa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EmpresaController extends Controller
 {
@@ -15,6 +16,8 @@ class EmpresaController extends Controller
 
     public function create()
     {
+        Gate::authorize('create', Empresa::class);
+
         return view('empresas.create');
     }
 
@@ -33,6 +36,8 @@ class EmpresaController extends Controller
 
     public function edit($id)
     {
+        Gate::authorize('update', Empresa::class);
+
         $empresa = Empresa::findOrFail($id);
         return view('empresas.edit', compact('empresa'));
     }
@@ -51,6 +56,8 @@ class EmpresaController extends Controller
 
     public function destroy($id)
     {
+        Gate::authorize('delete', Empresa::class);
+
         $Empresa = Empresa::findOrFail($id);
         $Empresa->delete();
         return redirect('empresas')->with('success', 'Empresa deleted successfully.');

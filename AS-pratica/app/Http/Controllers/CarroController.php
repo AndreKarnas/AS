@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carro;
 use App\Models\Pessoa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CarroController extends Controller
 {
@@ -16,6 +17,9 @@ class CarroController extends Controller
 
     public function create()
     {
+        
+        Gate::authorize('create', Carro::class);
+
         $pessoas = Pessoa::all();
         return view('carros.create', compact('pessoas'));
     }
@@ -38,6 +42,8 @@ class CarroController extends Controller
 
     public function edit($id)
     {
+        Gate::authorize('update', Carro::class);
+
         $carro = Carro::findOrFail($id);
         $pessoas = Pessoa::all();
         return view('carros.edit', compact('carro', 'pessoas'));
@@ -57,6 +63,8 @@ class CarroController extends Controller
 
     public function destroy($id)
     {
+        Gate::authorize('delete', Carro::class);
+
         $carro = Carro::findOrFail($id);
         $carro->delete();
         return redirect('carros')->with('success', 'Carro deleted successfully.');

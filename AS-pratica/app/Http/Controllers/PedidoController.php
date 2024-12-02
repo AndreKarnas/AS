@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pedido;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PedidoController extends Controller
 {
@@ -15,6 +16,8 @@ class PedidoController extends Controller
 
     public function create()
     {
+        Gate::authorize('create', Pedido::class);
+
         return view('pedidos.create');
     }
 
@@ -33,6 +36,8 @@ class PedidoController extends Controller
 
     public function edit($id)
     {
+        Gate::authorize('update', Pedido::class);
+
         $pedido = Pedido::findOrFail($id);
         return view('pedidos.edit', compact('pedido'));
     }
@@ -51,6 +56,8 @@ class PedidoController extends Controller
 
     public function destroy($id)
     {
+        Gate::authorize('delete', Pedido::class);
+
         $pedido = Pedido::findOrFail($id);
         $pedido->delete();
         return redirect('pedidos')->with('success', 'Pedido deleted successfully.');
